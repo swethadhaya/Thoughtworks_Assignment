@@ -1,0 +1,21 @@
+Install Kubernetes: Set up a Kubernetes cluster if you haven't done so already. Use a local development tool like Minikube or any cloud provider like EKS, AKS, GKE.
+
+Install Helm: Helm is a package manager for Kubernetes that simplifies the deployment and management of applications. Install Helm on your local machine by following the official Helm installation guide: https://helm.sh/docs/intro/install/
+
+Create a Helm chart: Helm uses charts to define the structure and configuration of applications. Create a new Helm chart for MediaWiki by running the following command: helm create mediawiki
+
+Configure the Helm chart: Navigate to the mediawiki directory created in the previous step. Inside, you'll find files such as values.yaml and templates/. Modify the values.yaml file to customize the configuration settings for MediaWiki, such as database credentials, service type, and any additional configuration options you need.
+
+Add MediaWiki dependencies: MediaWiki requires a database to function. You can either use an existing database or deploy one using a Helm chart. To deploy a database, you can use the official MySQL or PostgreSQL Helm charts and configure the database connection settings in the values.yaml file.
+
+Update the templates/deployment.yaml file: In the deployment.yaml file, update the spec.template.spec.containers[0].image field with the MediaWiki Docker image you want to use. You can find the official MediaWiki Docker image on Docker Hub.
+
+Install the Helm chart: From the root directory of your Helm chart (mediawiki), run the following command to install MediaWiki: helm install mediawiki 
+
+This command will deploy the MediaWiki application to your Kubernetes cluster using the settings specified in the values.yaml file.
+
+Access MediaWiki: After the installation is complete, you can access MediaWiki by retrieving the external IP or domain assigned to the MediaWiki service. Use the following command to get the external IP: kubectl get services
+
+Look for the MediaWiki service in the output and use the corresponding IP or domain to access the MediaWiki application.
+
+
