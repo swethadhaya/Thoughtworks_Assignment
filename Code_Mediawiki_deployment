@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Set the namespace and release name
+NAMESPACE="my-namespace"
+RELEASE_NAME="mediawiki"
+
+# Create the namespace if it doesn't exist
+kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+
+# Add the Helm repository for Bitnami charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Install MediaWiki using Helm
+helm install $RELEASE_NAME bitnami/mediawiki \
+  --namespace $NAMESPACE \
+  --set mediawikiUsername=admin \
+  --set mediawikiPassword=secretpassword \
+  --set mariadb.auth.rootPassword=secretpassword
+
+# Wait for the deployment to be ready
+kubectl rollout status deployment/$RELEASE_NAME-mediawiki --namespace $NAMESPACE
+
+# Get the MediaWiki service external IP
+MEDIAWIKI_EXTERNAL_IP=$(kubectl get service $RELEASE_NAME-mediawiki --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "MediaWiki is now deployed and accessible at: http://$MEDIAWIKI_EXTERNAL_IP/"
