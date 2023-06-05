@@ -24,3 +24,5 @@ kubectl rollout status deployment/$RELEASE_NAME-mediawiki --namespace $NAMESPACE
 MEDIAWIKI_EXTERNAL_IP=$(kubectl get service $RELEASE_NAME-mediawiki --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "MediaWiki is now deployed and accessible at: http://$MEDIAWIKI_EXTERNAL_IP/"
+
+## This code can be used only when Kubernetes and Helm is already installed on the system
